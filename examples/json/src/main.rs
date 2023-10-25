@@ -21,12 +21,12 @@ use risc0_zkvm::{
 };
 
 fn main() {
-    let data = include_str!("../res/example.json");
+    let data = r#"{"sub":"eeef7e18-0659-42e6-892a-82f0715eec38","aud":"test","nbf":1696016408,"iss":"https://oauth.sui.io","exp":1696102808,"nonce":"hTPpgF7XAKbW37rEUS6pEVZqmoI"}"#;
     let outputs = search_json(data);
     println!();
     println!("  {:?}", outputs.hash);
     println!(
-        "provably contains a field 'critical_data' with value {}",
+        "provably contains a field 'exp' with value {}",
         outputs.data
     );
 }
