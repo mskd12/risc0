@@ -19,11 +19,11 @@ use risc0_zkvm::{
     default_prover,
     serde::{from_slice, to_vec},
     ExecutorEnv, Receipt,
+    MemoryImage, Program, PAGE_SIZE,
 };
 
 use anyhow::Result;
 use bonsai_sdk::alpha as bonsai_sdk;
-use risc0_zkvm::{MemoryImage, Program, PAGE_SIZE};
 use std::time::Duration;
 
 // This is a Hello World demo for the RISC Zero zkVM.

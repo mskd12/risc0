@@ -15,7 +15,11 @@
 use hello_world::*;
 
 fn main() {
-    let session_id = remote_prove(17, 23).unwrap();
-    println!("Session ID: {:?}", session_id.uuid);
-    let _result = run_stark2snark(session_id.uuid);
+    // Uncomment to run local_prove
+    let _result = local_prove(17, 23);
+
+    // Uncomment to run remote_prove + run_stark2snark
+    // let session_id = remote_prove(17, 23).unwrap();
+    // println!("Session ID: {:?}", session_id.uuid);
+    // let _result = run_stark2snark(session_id.uuid);
 }
