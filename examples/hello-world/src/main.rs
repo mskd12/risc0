@@ -12,17 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use hello_world::multiply;
-use hello_world_methods::MULTIPLY_ID;
+use hello_world::*;
 
 fn main() {
-    // Pick two numbers
-    let (receipt, _) = multiply(17, 23);
-
-    // Here is where one would send 'receipt' over the network...
-
-    // Verify receipt, panic if it's wrong
-    receipt.verify(MULTIPLY_ID).expect(
-        "Code you have proven should successfully verify; did you specify the correct image ID?",
-    );
+    let session_id = remote_prove(17, 23).unwrap();
+    println!("Session ID: {:?}", session_id.uuid);
+    let _result = run_stark2snark(session_id.uuid);
 }

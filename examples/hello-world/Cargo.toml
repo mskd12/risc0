@@ -4,9 +4,15 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+anyhow = "1.0.75"
+bincode = "1.3.3"
+bonsai-sdk = "0.4.0"
+bytemuck = "1.14.0"
 hello-world-methods = { path = "methods" }
+hex = "0.4.3"
 risc0-zkvm = { path = "../../risc0/zkvm" }
 serde = "1.0"
+tracing = "0.1.40"
 
 [features]
 cuda = ["risc0-zkvm/cuda"]
