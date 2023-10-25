@@ -14,6 +14,7 @@
 
 #![no_main]
 
+use base64ct::{Encoding, Base64UrlUnpadded};
 use json::parse;
 use json_core::Outputs;
 use risc0_zkvm::{
@@ -24,13 +25,32 @@ use risc0_zkvm::{
 risc0_zkvm::guest::entry!(main);
 
 pub fn main() {
-    let data: String = env::read();
-    let sha = *Impl::hash_bytes(&data.as_bytes());
-    let data = parse(&data).unwrap();
-    let proven_val = data["exp"].as_u32().unwrap();
+    let jwt: String = env::read();
+    // Split the JWT into its three parts and hash the first two.
+    let parts = jwt.split('.').collect::<Vec<&str>>();
+    if parts.len() != 3 {
+        panic!("Invalid JWT");
+    }
+    let header: &str = parts[0];
+    let data: &str = parts[1];
+    // TODO: Verify the signature.
+    // let signature = parts[2];
+
+    let unsigned_jwt = format!("{}.{}", header, data);
+    let sha = *Impl::hash_bytes(&unsigned_jwt.as_bytes());
+
+    let mut payload_bytes = [0u8; 1024];
+    let payload_bytes = Base64UrlUnpadded::decode(data.as_bytes(), &mut payload_bytes).unwrap();
+    let payload = String::from_utf8(payload_bytes.to_vec()).unwrap();
+    println!("payload: {}", payload);
+
+    // Convert the bytes to a string. This assumes the payload is UTF-8 encoded.
+    let data = parse(&payload).unwrap();
+    let exp = data["exp"].as_u32().unwrap();
     let out = Outputs {
-        data: proven_val,
+        data: exp,
         hash: sha,
     };
     env::commit(&out);
+    env::log("");
 }

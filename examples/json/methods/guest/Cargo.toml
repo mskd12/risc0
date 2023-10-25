@@ -6,6 +6,7 @@ edition = "2021"
 [workspace]
 
 [dependencies]
+base64ct = "1.6.0"
 json = "0.12"
 json-core = { path = "../../core" }
 risc0-zkvm = { path = "../../../../risc0/zkvm", default-features = false, features = [ "std" ] }

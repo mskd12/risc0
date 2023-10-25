@@ -21,7 +21,9 @@ use risc0_zkvm::{
 };
 
 fn main() {
-    let data = r#"{"sub":"eeef7e18-0659-42e6-892a-82f0715eec38","aud":"test","nbf":1696016408,"iss":"https://oauth.sui.io","exp":1696102808,"nonce":"hTPpgF7XAKbW37rEUS6pEVZqmoI"}"#;
+    env_logger::init();
+    // let data = r#"{"sub":"eeef7e18-0659-42e6-892a-82f0715eec38","aud":"test","nbf":1696016408,"iss":"https://oauth.sui.io","exp":1696102808,"nonce":"hTPpgF7XAKbW37rEUS6pEVZqmoI"}"#;
+    let data = "eyJraWQiOiJzdWkta2V5LWlkIiwidHlwIjoiSldUIiwiYWxnIjoiUlMyNTYifQ.eyJzdWIiOiJlZWVmN2UxOC0wNjU5LTQyZTYtODkyYS04MmYwNzE1ZWVjMzgiLCJhdWQiOiJ0ZXN0IiwibmJmIjoxNjk2MDE2NDA4LCJpc3MiOiJodHRwczovL29hdXRoLnN1aS5pbyIsImV4cCI6MTY5NjEwMjgwOCwibm9uY2UiOiJoVFBwZ0Y3WEFLYlczN3JFVVM2cEVWWnFtb0kifQ.sXrG8Deswy-P5D2MX82HqVzkC_fYOAJ1bXLZMzNqV3IQs7bZU-rUQI3ylWreopNHEkg3xWgwt1QHstL9_x5zBH1t3M4p0192WUOA28lh9CehsfWGpCaQrOyW2ntsHVvKDE8ba33qGskuTz1GNRGb9IbWYen4ZavstzgrY0EXsgWBCI8ToI_X5BESugrbNKwdeS9Kc_qKYuJQICPlSZo4SaKjg3qXAndo0d7c7fuI20Am8qQxi08w-dhm0LRrQRmy0wGkTyISSCCbNQ5Tp2n2iteQQvxErv-vpl2Pr5XFkQW3VWc-4zDKojq8x3lZM_oz3HDt4yAGs6IWUc3oRSLd7w";
     let outputs = search_json(data);
     println!();
     println!("  {:?}", outputs.hash);
@@ -40,8 +42,10 @@ fn search_json(data: &str) -> Outputs {
     // Obtain the default prover.
     let prover = default_prover();
 
+    let start = std::time::Instant::now();
     // Produce a receipt by proving the specified ELF binary.
     let receipt = prover.prove_elf(env, SEARCH_JSON_ELF).unwrap();
+    println!("Proving took {:?}", start.elapsed());
 
     from_slice(&receipt.journal).unwrap()
 }
