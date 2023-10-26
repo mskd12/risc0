@@ -17,6 +17,6 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct Outputs {
-    pub data: u32,
+    pub iss: String,
     pub hash: Digest,
 }

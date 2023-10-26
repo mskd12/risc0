@@ -80,6 +80,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "crypto-bigint"
+version = "0.5.2"
+source = "git+https://github.com/risc0/RustCrypto-crypto-bigint?tag=v0.5.2-risc0#8b30304277cfe553b51a78a0e693f48bbb059eb3"
+dependencies = [
+ "getrandom",
+ "rand_core",
+ "subtle",
+]
+
+[[package]]
 name = "crypto-common"
 version = "0.1.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -188,9 +198,9 @@ dependencies = [
 
 [[package]]
 name = "num-traits"
-version = "0.2.15"
+version = "0.2.17"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "578ede34cf02f8924ab9447f50c28075b4d3e5b269972345e7e0372b38c6cdcd"
+checksum = "39e3200413f237f41ab11ad6d161bc7239c84dcb631773ccd7de3dfe4b5c267c"
 dependencies = [
  "autocfg",
 ]
@@ -230,6 +240,9 @@ name = "rand_core"
 version = "0.6.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ec0be4795e2f6a28069bec0b5ff3e2ac9bafc99e6a9a7dc3547996c5c816922c"
+dependencies = [
+ "getrandom",
+]
 
 [[package]]
 name = "risc0-binfmt"
@@ -330,6 +343,7 @@ name = "search_json"
 version = "0.12.0"
 dependencies = [
  "base64ct",
+ "crypto-bigint",
  "json",
  "json-core",
  "risc0-zkvm",
