@@ -15,13 +15,7 @@
 #![no_main]
 
 use base64ct::{Encoding, Base64UrlUnpadded};
-use crypto_bigint::{
-    U2048,
-    Encoding as OtherEncoding,
-    modular::runtime_mod::{
-        DynResidue, DynResidueParams
-    }
-};
+use num_bigint::BigUint;
 use json::parse;
 use json_core::Outputs;
 use risc0_zkvm::{
@@ -31,10 +25,10 @@ use risc0_zkvm::{
 
 risc0_zkvm::guest::entry!(main);
 
-fn base64url_to_big_int(x: &str) -> U2048 {
+fn base64url_to_big_int(x: &str) -> BigUint {
     let mut bytes = [0u8; 256];
     let bytes = Base64UrlUnpadded::decode(x.as_bytes(), &mut bytes).unwrap();
-    U2048::from_be_slice(bytes)
+    BigUint::from_bytes_be(bytes)
 }
 
 fn verify_sig(s: &str, pk: &str, hash: &[u8]) {
@@ -43,16 +37,10 @@ fn verify_sig(s: &str, pk: &str, hash: &[u8]) {
     let modulus = base64url_to_big_int(pk);
     println!("modulus: {}", modulus);
 
-    let params = DynResidueParams::new(&modulus);
-    let sig_mod = DynResidue::new(&sig, params);
-
     // Verify RSA signature
-    let e = U2048::from(65537u32);
+    let e = BigUint::from(65537u32);
 
-    let tmp = sig_mod.pow(&e).retrieve();
-    // let tmp = sig.modpow(&e, &modulus);
-
-    let bytes = tmp.to_be_bytes();
+    let bytes = sig.modpow(&e, &modulus).to_bytes_be();
     // for i in 0..bytes.len() {
     //     println!("{} {}", i, bytes[i]);
     // }
